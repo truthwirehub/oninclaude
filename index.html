@@ -1,0 +1,34 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Super Brain Web</title>
+    <style>
+        body { background-color: #0d1117; color: #c9d1d9; font-family: monospace; padding: 20px; }
+        .terminal { border: 1px solid #30363d; padding: 20px; border-radius: 6px; max-width: 800px; margin: auto; background: #161b22; }
+        h2 { color: #58a6ff; margin-top: 0; }
+        textarea { width: 100%; height: 150px; background: #0d1117; color: #58a6ff; border: 1px solid #30363d; padding: 10px; border-radius: 4px; box-sizing: border-box; font-family: monospace; resize: none; }
+        button { background: #238636; color: white; border: none; padding: 10px 20px; margin-top: 10px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+        button:hover { background: #2ea043; }
+        .output { margin-top: 20px; padding: 15px; background: #0d1117; border-left: 3px solid #58a6ff; min-height: 50px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <div class="terminal">
+        <h2>[ Claude Code - Web Terminal Interface ]</h2>
+        <p>Type or paste your data/prompt below (Ctrl+V works flawlessly here):</p>
+        <textarea id="promptInput" placeholder="Enter your prompt here..."></textarea>
+        <button onclick="runCommand()">Execute Prompt</button>
+        <div class="output" id="outputDisplay">System Status: Ready to deploy...</div>
+    </div>
+    <script>
+        function runCommand() {
+            const input = document.getElementById('promptInput').value;
+            if(!input) return;
+            document.getElementById('outputDisplay').innerText = "Processing prompt via web pipeline...\n" + input;
+        }
+    </script>
+</body>
+</html>
