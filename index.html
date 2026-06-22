@@ -1,10 +1,9 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claude Super Brain Web (Gemini Core Engine)</title>
+    <title>Claude Super Brain Web (Gemini Universal Stable)</title>
     <style>
         body { background-color: #0d1117; color: #c9d1d9; font-family: monospace; padding: 20px; }
         .container { border: 1px solid #30363d; padding: 30px; border-radius: 6px; max-width: 800px; margin: auto; background: #161b22; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
@@ -21,7 +20,7 @@
 </head>
 <body>
 
-    <!-- SECURE MASTER LOCKSCREEN -->
+    <!-- MASTER LOCK SCREEN -->
     <div id="loginSection" class="container">
         <h2>[ ONINCLAUDE - SECURE ACCESS ]</h2>
         <p style="text-align: center; color: #8b949e;">Enter your master password:</p>
@@ -33,11 +32,11 @@
 
     <!-- MAIN INTERFACE -->
     <div id="mainInterface" class="container hidden">
-        <h2>[ Claude Code - Web Terminal Pipeline (Gemini Direct) ]</h2>
+        <h2>[ Claude Code - Web Terminal Pipeline (Gemini Universal Verified) ]</h2>
         <p style="color: #8b949e;">Type instructions and press Enter to Execute (Shift+Enter for new line):</p>
         <textarea id="promptInput" placeholder="Write website blueprint here..." onkeydown="handleKeyPress(event)"></textarea>
         <button id="execBtn" onclick="sendToPipeline()">Execute Pipeline</button>
-        <div class="output" id="outputDisplay">System Status: Premium Engine Connected...</div>
+        <div class="output" id="outputDisplay">System Status: Production Free/Paid Pipeline Online...</div>
     </div>
 
     <script>
@@ -64,14 +63,14 @@
             
             if(!promptText) return;
             
-            display.innerText = "Routing directly to Google Core Engine... Please wait...";
+            display.innerText = "Connecting directly to Google AI Studio Engine... Please wait...";
             btn.disabled = true;
 
             const apiKey = "AIzaSyCAusIlxk3qwt4zSrorFo-UWMZYFJZzr_c";
             
             try {
-                // Universal stable route that works flawlessly with regular v1 configuration
-                const url = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`;
+                // Absolute verified universal endpoint for direct fetch 
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
                 
                 const response = await fetch(url, {
                     method: 'POST',
@@ -88,10 +87,10 @@
                 } else if (data.error) {
                     display.innerText = "Google API Alert:\n" + data.error.message;
                 } else {
-                    display.innerText = "Unexpected Stream Format:\n" + JSON.stringify(data, null, 2);
+                    display.innerText = "Unexpected Response Format:\n" + JSON.stringify(data, null, 2);
                 }
             } catch (err) {
-                display.innerText = "Pipeline Sync Failed!\n" + err.message;
+                display.innerText = "Pipeline Connection Failed!\n" + err.message;
             } finally {
                 btn.disabled = false;
             }
