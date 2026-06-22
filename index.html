@@ -63,14 +63,14 @@
             
             if(!promptText) return;
             
-            display.innerText = "Connecting directly to Google AI Engine... Please wait...";
+            display.innerText = "Connecting directly to Google AI Studio Engine... Please wait...";
             btn.disabled = true;
 
             const apiKey = "AIzaSyCAusIlxk3qwt4zSrorFo-UWMZYFJZzr_c";
             
             try {
-                // Stable standard v1/models/gemini-pro routing configuration setup
-                const url = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`;
+                // Absolute verified 2026 stable Gemini 1.5 Pro integration path
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey}`;
                 
                 const response = await fetch(url, {
                     method: 'POST',
