@@ -1,3 +1,4 @@
+```javascript
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
@@ -9,11 +10,10 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Missing Prompt' });
     }
 
-    // Zaman bhai, aap ki secure Google API Key yahan backend par lock kar di hai
     const apiKey = "AIzaSyCAusIlxk3qwt4zSrorFo-UWMZYFJZzr_c";
 
     try {
-        // Google Gemini Pro Free Flash Pipeline Engine
+        // Stable model route updated
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -31,7 +31,7 @@ export default async function handler(req, res) {
         } else if (data.error) {
             return res.status(200).json({ error: data.error.message });
         } else {
-            return res.status(200).json({ error: 'Unexpected response from Gemini API' });
+            return res.status(200).json({ error: JSON.stringify(data) });
         }
     } catch (err) {
         return res.status(500).json({ error: err.message });

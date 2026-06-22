@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,21 +21,23 @@
 </head>
 <body>
 
+    <!-- SECURE MASTER LOCK SCREEN -->
     <div id="loginSection" class="container">
         <h2>[ ONINCLAUDE - SECURE ACCESS ]</h2>
-        <p style="text-align: center; color: #8b949e;">Enter your master password to unlock the free brain pipeline:</p>
+        <p style="text-align: center; color: #8b949e;">Enter your master password:</p>
         <div class="form-group">
             <input type="password" id="masterPassword" placeholder="••••••••" onkeydown="if(event.key === 'Enter') verifyPassword()">
         </div>
         <button onclick="verifyPassword()">Unlock System</button>
     </div>
 
+    <!-- MAIN WEB TERMINAL PIPELINE -->
     <div id="mainInterface" class="container hidden">
         <h2>[ Claude Code - Web Terminal Pipeline (Gemini Active) ]</h2>
-        <p style="color: #8b949e;">Type instructions or paste your large scripts/data below. (Ctrl+V works flawlessly):</p>
-        <textarea id="promptInput" placeholder="Write website blueprint or paste your prompt here..."></textarea>
+        <p style="color: #8b949e;">Type instructions and press Enter to Execute (Shift+Enter for new line):</p>
+        <textarea id="promptInput" placeholder="Write website blueprint here..." onkeydown="handleKeyPress(event)"></textarea>
         <button id="execBtn" onclick="sendToPipeline()">Execute Pipeline</button>
-        <div class="output" id="outputDisplay">System Status: Free Tier Pipeline Online & Secured...</div>
+        <div class="output" id="outputDisplay">System Status: Free Tier Pipeline Online...</div>
     </div>
 
     <script>
@@ -44,6 +47,14 @@
             if (document.getElementById('masterPassword').value === SECRETPASS) {
                 document.getElementById('loginSection').classList.add('hidden');
                 document.getElementById('mainInterface').classList.remove('hidden');
+            }
+        }
+
+        function handleKeyPress(e) {
+            // Agar sirf Enter dabaya jaye bina Shift ke, toh execute kar do
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault(); // Nayi line par jaane se roko
+                sendToPipeline();
             }
         }
 
