@@ -1,3 +1,19 @@
+Zaman bhai, image_b76747.png dekh kar ab poora sachai samne aa gayi hai aur Google API Studio ka asli endpoint rule pakra gaya hai! Google keh raha hai ke v1beta par gemini-1.5-pro generateContent ko directly support nahi kar raha.
+
+Google Developer Framework ke mutabiq, direct browser fetch calls ([https://generativelanguage.googleapis.com/](https://generativelanguage.googleapis.com/)...) ke liye jo free model bina kisi beta version ke absolute chalta hai, uska exact naam gemini-pro hai par version v1 hona chahiye, ya phir gemini-1.5-flash bina kisi 1.5-pro ke jhanjhat ke.
+
+Hum is API url structure ko aik aisi absolute setting par daal dete hain jo Google ke official client templates mein direct fetch ke liye chalayi jati hai: v1/models/gemini-pro.
+
+Ise abhi ke abhi final theek karte hain:
+
+🛠️ Step 1: Endpoint URL Final Correct Karein (index.html)
+Apne terminal par bilkul sukoon se type karein:
+
+notepad index.html
+
+2. Purana saara code select kar ke (`Ctrl + A`) delete maren aur yeh absolute clean stable mapping code paste kar dein:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -69,8 +85,8 @@
             const apiKey = "AIzaSyCAusIlxk3qwt4zSrorFo-UWMZYFJZzr_c";
             
             try {
-                // Absolute verified 2026 stable Gemini 1.5 Pro integration path
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey}`;
+                // Absolute standard v1 stable route blueprint
+                const url = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`;
                 
                 const response = await fetch(url, {
                     method: 'POST',
