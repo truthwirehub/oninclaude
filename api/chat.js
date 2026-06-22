@@ -3,29 +3,36 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const { prompt, apiKey } = req.body;
+    const { prompt } = req.body;
 
-    if (!apiKey || !prompt) {
-        return res.status(400).json({ error: 'Missing API Key or Prompt' });
+    if (!prompt) {
+        return res.status(400).json({ error: 'Missing Prompt' });
     }
 
+    // Zaman bhai, aap ki secure Google API Key yahan backend par lock kar di hai
+    const apiKey = "AIzaSyCAusIlxk3qwt4zSrorFo-UWMZYFJZzr_c";
+
     try {
-        const response = await fetch('https://api.anthropic.com/v1/messages', {
+        // Google Gemini Pro Free Flash Pipeline Engine
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-api-key': apiKey,
-                'anthropic-version': '2023-06-01'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                model: "claude-3-5-sonnet-20241022",
-                max_tokens: 4000,
-                messages: [{ role: "user", content: prompt }]
+                contents: [{ parts: [{ text: prompt }] }]
             })
         });
 
         const data = await response.json();
-        return res.status(200).json(data);
+        
+        if (data.candidates && data.candidates[0].content.parts[0]) {
+            return res.status(200).json({
+                content: [{ text: data.candidates[0].content.parts[0].text }]
+            });
+        } else if (data.error) {
+            return res.status(200).json({ error: data.error.message });
+        } else {
+            return res.status(200).json({ error: 'Unexpected response from Gemini API' });
+        }
     } catch (err) {
         return res.status(500).json({ error: err.message });
     }

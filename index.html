@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claude Super Brain Web (Serverless)</title>
+    <title>Claude Super Brain Web (Gemini Free Tier)</title>
     <style>
         body { background-color: #0d1117; color: #c9d1d9; font-family: monospace; padding: 20px; }
         .container { border: 1px solid #30363d; padding: 30px; border-radius: 6px; max-width: 800px; margin: auto; background: #161b22; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
         h2 { color: #58a6ff; margin-top: 0; text-align: center; }
         .form-group { margin-bottom: 15px; text-align: center; }
-        input[type="password"], input[type="text"], textarea { width: 100%; background: #0d1117; color: #58a6ff; border: 1px solid #30363d; padding: 12px; border-radius: 4px; box-sizing: border-box; font-family: monospace; }
-        input[type="password"], input[type="text"] { max-width: 400px; text-align: center; font-size: 14px; margin-bottom: 10px; }
-        textarea { height: 180px; resize: none; font-size: 14px; margin-top: 10px; }
+        input[type="password"], textarea { width: 100%; background: #0d1117; color: #58a6ff; border: 1px solid #30363d; padding: 12px; border-radius: 4px; box-sizing: border-box; font-family: monospace; }
+        input[type="password"] { max-width: 300px; text-align: center; font-size: 16px; }
+        textarea { height: 220px; resize: none; font-size: 14px; margin-top: 10px; }
         button { background: #238636; color: white; border: none; padding: 12px 24px; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 14px; display: block; margin: 15px auto 0 auto; }
         button:hover { background: #2ea043; }
-        .output { margin-top: 25px; padding: 15px; background: #0d1117; border-left: 3px solid #58a6ff; min-height: 80px; white-space: pre-wrap; font-size: 14px; line-height: 1.5; }
+        .output { margin-top: 25px; padding: 15px; background: #0d1117; border-left: 3px solid #58a6ff; min-height: 80px; white-space: pre-wrap; font-size: 14px; line-height: 1.5; color: #c9d1d9; }
         .hidden { display: none; }
     </style>
 </head>
@@ -22,7 +22,7 @@
 
     <div id="loginSection" class="container">
         <h2>[ ONINCLAUDE - SECURE ACCESS ]</h2>
-        <p style="text-align: center; color: #8b949e;">Enter your master password:</p>
+        <p style="text-align: center; color: #8b949e;">Enter your master password to unlock the free brain pipeline:</p>
         <div class="form-group">
             <input type="password" id="masterPassword" placeholder="••••••••" onkeydown="if(event.key === 'Enter') verifyPassword()">
         </div>
@@ -30,15 +30,11 @@
     </div>
 
     <div id="mainInterface" class="container hidden">
-        <h2>[ Claude Code - Web Terminal Pipeline ]</h2>
-        <div style="text-align: center; margin-bottom: 15px;">
-            <p style="color: #8b949e; margin-bottom: 5px;">Enter your Anthropic API Key:</p>
-            <input type="text" id="apiKeyInput" placeholder="Paste your sk-ant-... key here">
-        </div>
-        <p style="color: #8b949e;">Paste your deep scripts, data, or prompts below:</p>
-        <textarea id="promptInput" placeholder="Enter instructions here..."></textarea>
-        <button id="execBtn" onclick="sendToClaude()">Execute Pipeline</button>
-        <div class="output" id="outputDisplay">System Status: Authenticated & Ready...</div>
+        <h2>[ Claude Code - Web Terminal Pipeline (Gemini Active) ]</h2>
+        <p style="color: #8b949e;">Type instructions or paste your large scripts/data below. (Ctrl+V works flawlessly):</p>
+        <textarea id="promptInput" placeholder="Write website blueprint or paste your prompt here..."></textarea>
+        <button id="execBtn" onclick="sendToPipeline()">Execute Pipeline</button>
+        <div class="output" id="outputDisplay">System Status: Free Tier Pipeline Online & Secured...</div>
     </div>
 
     <script>
@@ -51,34 +47,33 @@
             }
         }
 
-        async function sendToClaude() {
+        async function sendToPipeline() {
             const promptText = document.getElementById('promptInput').value;
-            const apiKey = document.getElementById('apiKeyInput').value;
             const display = document.getElementById('outputDisplay');
             const btn = document.getElementById('execBtn');
             
-            if(!apiKey || !promptText) return;
+            if(!promptText) return;
             
-            display.innerText = "Processing via Vercel Cloud Serverless Pipeline... Please wait...";
+            display.innerText = "Routing query via secure serverless engine... Please wait...";
             btn.disabled = true;
             
             try {
                 const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt: promptText, apiKey: apiKey })
+                    body: JSON.stringify({ prompt: promptText })
                 });
 
                 const data = await response.json();
                 if(data.content && data.content[0]) {
                     display.innerText = data.content[0].text;
                 } else if (data.error) {
-                    display.innerText = "Server Error:\n" + (data.error.message || data.error);
+                    display.innerText = "Engine Error:\n" + data.error;
                 } else {
                     display.innerText = JSON.stringify(data, null, 2);
                 }
             } catch (err) {
-                display.innerText = "Connection Failed!\n" + err.message;
+                display.innerText = "Pipeline Connection Failed!\n" + err.message;
             } finally {
                 btn.disabled = false;
             }
