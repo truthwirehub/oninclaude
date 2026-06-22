@@ -1,33 +1,99 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claude Super Brain Web</title>
+    <title>Claude Super Brain Web (Secure)</title>
     <style>
         body { background-color: #0d1117; color: #c9d1d9; font-family: monospace; padding: 20px; }
-        .terminal { border: 1px solid #30363d; padding: 20px; border-radius: 6px; max-width: 800px; margin: auto; background: #161b22; }
-        h2 { color: #58a6ff; margin-top: 0; }
-        textarea { width: 100%; height: 150px; background: #0d1117; color: #58a6ff; border: 1px solid #30363d; padding: 10px; border-radius: 4px; box-sizing: border-box; font-family: monospace; resize: none; }
-        button { background: #238636; color: white; border: none; padding: 10px 20px; margin-top: 10px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+        .container { border: 1px solid #30363d; padding: 30px; border-radius: 6px; max-width: 800px; margin: auto; background: #161b22; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+        h2 { color: #58a6ff; margin-top: 0; text-align: center; }
+        .form-group { margin-bottom: 15px; text-align: center; }
+        input[type="password"], textarea { width: 100%; background: #0d1117; color: #58a6ff; border: 1px solid #30363d; padding: 12px; border-radius: 4px; box-sizing: border-box; font-family: monospace; }
+        input[type="password"] { max-width: 300px; text-align: center; font-size: 16px; }
+        textarea { height: 180px; resize: none; font-size: 14px; margin-top: 10px; }
+        button { background: #238636; color: white; border: none; padding: 12px 24px; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 14px; display: block; margin: 15px auto 0 auto; }
         button:hover { background: #2ea043; }
-        .output { margin-top: 20px; padding: 15px; background: #0d1117; border-left: 3px solid #58a6ff; min-height: 50px; white-space: pre-wrap; }
+        .output { margin-top: 25px; padding: 15px; background: #0d1117; border-left: 3px solid #58a6ff; min-height: 80px; white-space: pre-wrap; font-size: 14px; line-height: 1.5; }
+        .hidden { display: none; }
+        .error-msg { color: #f85149; text-align: center; font-weight: bold; margin-top: 10px; }
     </style>
 </head>
 <body>
-    <div class="terminal">
-        <h2>[ Claude Code - Web Terminal Interface ]</h2>
-        <p>Type or paste your data/prompt below (Ctrl+V works flawlessly here):</p>
-        <textarea id="promptInput" placeholder="Enter your prompt here..."></textarea>
-        <button onclick="runCommand()">Execute Prompt</button>
-        <div class="output" id="outputDisplay">System Status: Ready to deploy...</div>
+
+    <div id="loginSection" class="container">
+        <h2>[ ONINCLAUDE - SECURE ACCESS ]</h2>
+        <p style="text-align: center; color: #8b949e;">Enter your master password to unlock the brain pipeline:</p>
+        <div class="form-group">
+            <input type="password" id="masterPassword" placeholder="••••••••" onkeydown="if(event.key === 'Enter') verifyPassword()">
+        </div>
+        <button onclick="verifyPassword()">Unlock System</button>
+        <div id="loginError" class="error-msg"></div>
     </div>
+
+    <div id="mainInterface" class="container hidden">
+        <h2>[ Claude Code - Web Terminal Pipeline ]</h2>
+        <p style="color: #8b949e;">Paste your deep scripts, data, or prompts below. System will process it using real-time sync:</p>
+        <textarea id="promptInput" placeholder="Enter your instructions or paste data here..."></textarea>
+        <button id="execBtn" onclick="sendToClaude()">Execute Pipeline</button>
+        <div class="output" id="outputDisplay">System Status: Authenticated & Ready...</div>
+    </div>
+
     <script>
-        function runCommand() {
-            const input = document.getElementById('promptInput').value;
-            if(!input) return;
-            document.getElementById('outputDisplay').innerText = "Processing prompt via web pipeline...\n" + input;
+        // Zaman bhai, aap apna master password niche badal sakte hain (Abhi 'zaman123' rakha hai)
+        const SECRETPASS = "zaman123"; 
+
+        function verifyPassword() {
+            const pass = document.getElementById('masterPassword').value;
+            const errorDiv = document.getElementById('loginError');
+            
+            if (pass === SECRETPASS) {
+                document.getElementById('loginSection').classList.add('hidden');
+                document.getElementById('mainInterface').classList.remove('hidden');
+            } else {
+                errorDiv.innerText = "Access Denied: Invalid Master Password!";
+                document.getElementById('masterPassword').value = "";
+            }
+        }
+
+        async function sendToClaude() {
+            const promptText = document.getElementById('promptInput').value;
+            const display = document.getElementById('outputDisplay');
+            const btn = document.getElementById('execBtn');
+            
+            if(!promptText) return;
+            
+            display.innerText = "Connecting to Anthropic API pipeline... Please wait...";
+            btn.disabled = true;
+            
+            try {
+                // Yeh direct Anthropic ke public API router se data connect karega
+                const response = await fetch('https://api.anthropic.com/v1/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': 'YOUR_ANTHROPIC_API_KEY_HERE', // Hum isay safe environment variables mein daalenge
+                        'anthropic-version': '2023-06-01',
+                        'dangerouslyAllowBrowser': 'true'
+                    },
+                    body: JSON.stringify({
+                        model: "claude-3-5-sonnet-20241022",
+                        max_tokens: 4000,
+                        messages: [{ role: "user", content: promptText }]
+                    })
+                });
+
+                const data = await response.json();
+                if(data.content && data.content[0]) {
+                    display.innerText = data.content[0].text;
+                } else {
+                    display.innerText = "Error from pipeline:\n" + JSON.stringify(data, null, 2);
+                }
+            } catch (err) {
+                display.innerText = "Pipeline Connection Failed! Make sure API Key is configured correctly.\n" + err.message;
+            } finally {
+                btn.disabled = false;
+            }
         }
     </script>
 </body>
